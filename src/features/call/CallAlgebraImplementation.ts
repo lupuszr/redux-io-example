@@ -1,40 +1,10 @@
-import { Option, None, Cancelable, Future, Success, IO, Duration, TestScheduler, GlobalScheduler, ExecutionModel, Try, ICancelable, Some, Failure } from "funfix"
-
-import CustomerCallAlgebra from '../algebras/CallAlgebra';
+import { Option, None, Future, IO, Duration, Try, Some, Failure } from "funfix"
+import { Balance, Customer, Interpreter, Call} from './types';
+import CustomerCallAlgebra from '../../algebras/CallAlgebra';
 
 
 const fetchFuture = <T>(url: string, config: {}) =>  Future.fromPromise(fetch(url, config).then(res => res.json() as unknown as T));
 const fetchIO = <T>(url: string, config: {}) => IO.fromFuture(fetchFuture<T>(url, config));
-
-export type Balance = {
-  amount: number
-}
-
-export type Customer = {
-  id: string,
-  given_name: string,
-  family_name: string,
-  balance: Balance
-}
-
-export type Interpreter = {
-  name: string
-}
-
-export type Call = {
-  status: 'cancelled' | 'in_progress' | 'not_started' | 'ended' | 'reconnecting',
-  room_id: Option<string>,
-  length: number,
-  interpreter: Option<Interpreter>,
-  customer: Option<Customer>
-}
-
-const copyCall = (c: Call, match: Partial<{[a in keyof Call]: Call[a]}>): Call => {
-  return {
-    ...c,
-    ...match
-  }
-}
 
 const validateCustomer = (c: Customer): Option<Customer> =>  {
   return Some(c)
@@ -48,7 +18,7 @@ export const callAlgebraImplementation = new CustomerCallAlgebra<Customer, Inter
   // background check
   (c: Customer) => fetchIO<Customer>(`http://localhost:3000/customer/${c.id}`, {}).chain(a => IO.of(() => a.balance.amount >= 0)),
   // ask for interpreter
-  (c: Customer) => fetchIO<Interpreter>('http://localhost:3000/interpreter/1', {}),
+  () => fetchIO<Interpreter>('http://localhost:3000/interpreter/1', {}),
   // updateCallInfo
   (call: Call) => IO.of(() => call),
   // establish call
