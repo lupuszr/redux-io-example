@@ -1,13 +1,16 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Call from './features/Call';
+import Call from './features/call/Call';
+import { Provider } from 'react-redux';
+import store from './shared/store';
 
 const App: React.FC = () => {
   return (
-    <div className="">
-      <Call />
-    </div>
+    <Provider store={store}>
+      <div className="">
+        <Call />
+      </div>
+    </Provider>
   );
 }
 
