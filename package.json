@@ -4,9 +4,13 @@
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.23",
+    "@types/luxon": "^1.21.0",
     "@types/node": "12.12.12",
     "@types/react": "16.9.13",
     "@types/react-dom": "16.9.4",
+    "funfix": "^7.0.1",
+    "json-server": "^0.15.1",
+    "luxon": "^1.21.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.2.0",
@@ -16,7 +20,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "mock-server": "json-server --watch ./mock_server/db.json"
   },
   "eslintConfig": {
     "extends": "react-app"
