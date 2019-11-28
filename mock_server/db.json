@@ -1,0 +1,55 @@
+{
+  "interpreter": [
+    {
+      "id": 1,
+      "name": "George"
+    }
+  ],
+  "customer": [
+    {
+      "id": 1,
+      "give_name": "Pera",
+      "family_name": "Peric",
+      "balance": {
+        "amount": 10
+      }
+    },
+    {
+      "id": 2,
+      "give_name": "Jovica",
+      "family_name": "Shitic",
+      "balance": {
+        "amount": -40
+      }
+    }
+  ],
+  "calls": [
+    {
+      "status": "cancelled",
+      "interpreter": {
+        "_isEmpty": false,
+        "value": {
+          "id": 1,
+          "name": "George"
+        }
+      },
+      "customer": {
+        "_isEmpty": false,
+        "value": {
+          "id": "1",
+          "given_name": "Alexis",
+          "family_name": "Greek warior",
+          "balance": {
+            "amount": 10
+          }
+        }
+      },
+      "length": 0,
+      "room_id": {
+        "_isEmpty": false,
+        "value": "20"
+      },
+      "id": 1
+    }
+  ]
+}
