@@ -9,7 +9,7 @@ export default function ioCallReducer(state: IO<Call> = IO.of(() => initialState
       return IO.of(() => initialState);
     }
     case 'startACall': {
-      return callAlgebraImplementation.startACall(action.payload.customer); // old state does not mater
+      return callAlgebraImplementation.startACall(action.payload.customer); // old state does not matter
     }
     case 'cancelCall': {
       return state.chain(call => callAlgebraImplementation.cancelCall(call));
