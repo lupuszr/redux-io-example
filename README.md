@@ -13,8 +13,8 @@ In our example we want to define a call service:
 class CallAlgebra {}
 ```
 
-Next we can meditate about the flow of our business logic. In the example we imagining a scenario 
-where a customer wish to ask for some help from an agent. So our flow should look something like this:
+Next we can meditate about the flow of our business logic. In the example we imagine a scenario 
+where a customer wishes to ask for some help from an agent. So our flow should look something like this:
 customerBackgroundCheck -> askForAgent -> establishCall -> endCall
                                        -> cancelCall
 
@@ -40,7 +40,7 @@ class CallAlgebra<Customer, Agent, Call> {
 }
 ```
 
-As you see we are keeping our algebra pure and monadic, so we are able to chain our methods to build larger and more complex logic. For this example we are using funfix/effects but any IO implementation that support sync and async execution should work.
+As you see, we are keeping our algebra pure and monadic, so we are able to chain our methods to build larger and more complex logic. For this example we are using funfix/effects but any IO implementation that supports sync and async execution should work.
 
 ```typescript
 class CallAlgebra<Customer, Agent, Call> {
@@ -61,13 +61,13 @@ class CallAlgebra<Customer, Agent, Call> {
 }
 ```
 
-Now we have every piece to build our algebra, try play with this idea a bit and then we can move to the next step.
+Now we have every piece needed to build our algebra. Try to play with this idea a bit and then we can move on to the next step.
 
 ## 2. Provide a definition for the algebra
 
-Now that we have an algebra we are ready to create an implementation for it (in FP word its called interpreter)
+Now that we have an algebra, we are ready to create an implementation for it (in FP word its called interpreter).
 
-It is made of 2 sub steps. First we need to define our types for our algebras params and then we need to pass our methods implementation:
+It is made of 2 substeps. First we need to define types for the params of our algebra and then we need to pass the implementation of our methods:
 
 ```typescript
 export type Balance = {
@@ -149,7 +149,7 @@ const callAlgebraImplementation = new CallAlgebra<Customer, Agent, Call>(
 ```
 
 ## 3. Connect the algebra to a react redux application.
-Because the IO monad is lazy and referentially transparent we can store its state in redux.
+Because the IO monad is lazy and referentially transparent we can store its representation as a state in redux.
 To make this work we need 2 reducers. One for the IO and the other one for the result of the IO.
 
 ```typescript
@@ -171,8 +171,7 @@ export default function ioCallReducer(state: IO<Call> = IO.of(() => initialState
 }
 ```
 
-As you see the reducer name starts with `io` this is a must because with this we can detect which reducers 
-should are IO monads. Also it is important to mention that its actions should have a field target:
+As you see, the reducer name starts with `io`. This is a must because with this we can detect which reducers are IO monads. Also, it is important to mention that its actions should have a field `target`:
 
 ```typescript
 export const startACall: startACallT = customer => {
