@@ -1,7 +1,7 @@
 import { callAlgebraImplementation } from './CallAlgebraImplementation';
-import { Customer } from './types';
+import { Customer, Call } from './types';
 
-type actionTypeT = keyof typeof callAlgebraImplementation | 'init'
+type actionTypeT = 'startACall' | 'startACallSuccess' | 'startACallError' | 'endCall' | 'cancelCall' | 'cancelCallSuccess' | 'cancelCallError' | 'init'
 
 type ack<typeT extends actionTypeT, payloadT> = {
   payload: payloadT;
@@ -12,8 +12,12 @@ type ack<typeT extends actionTypeT, payloadT> = {
 export type actionT =
   | ack<'init', { }>
   | ack<'startACall', { customer: Customer }>
+  | ack<'startACallSuccess', Call>
+  | ack<'startACallError', Call>
   | ack<'endCall', { }>
-  | ack<'cancelCall', { }>
+  | ack<'cancelCall', {}>
+  | ack<'cancelCallSuccess', Call>
+  | ack<'cancelCallError', Call>
 
 
 type startACallT = (c: Customer) => actionT;

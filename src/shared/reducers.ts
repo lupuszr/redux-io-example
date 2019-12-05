@@ -6,7 +6,7 @@ import { IO } from 'funfix';
 export type ioReducerT = stateT;
 
 export type reduxStateT = {
-  ioCall: IO<Call>;
+  ioCall: [IO<Call>, Call];
   ioReducer: ioReducerT;
 };
 

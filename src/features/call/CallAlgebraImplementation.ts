@@ -4,7 +4,7 @@ import CustomerCallAlgebra from '../../algebras/CallAlgebra';
 
 
 const fetchFuture = <T>(url: string, config: {}) =>  Future.fromPromise(fetch(url, config).then(res => res.json() as unknown as T));
-const fetchIO = <T>(url: string, config: {}) => IO.fromFuture(fetchFuture<T>(url, config));
+const fetchIO = <T>(url: string, config: {}) => IO.fromFuture(fetchFuture<T>(url, config).delayResult(1000));
 
 const validateCustomer = (c: Customer): Option<Customer> =>  {
   return Some(c)
