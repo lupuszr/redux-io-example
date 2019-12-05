@@ -8,6 +8,13 @@ const snd = <A, B>(a: [A, B]): B => a[1];
 const lift = <T>(c: T) => IO.of(() => c);
 
 export default function ioCallReducer(state: [IO<Call>, Call] = [IO.of(() => initialState), initialState], action: actionT): [IO<Call>, Call] {
+  const update = (a: IO<Call>): [IO<Call>, Call] => {
+    return [
+      a,
+      snd(state)
+    ]
+  }
+
   switch(action.type) {
     case 'init': {
       return [
@@ -16,26 +23,18 @@ export default function ioCallReducer(state: [IO<Call>, Call] = [IO.of(() => ini
       ];
     }
     case 'startACall': {
-      return [
-        callAlgebraImplementation.startACall(action.payload.customer),
-        snd(state)
-      ]; // old state does not matter
-    }
-    case 'startACallSuccess': {
-      return [state[0], action.payload]
-    }
-    case 'startACallError': {
-      return [state[0], action.payload]
+      return update(
+        callAlgebraImplementation.startACall(action.payload.customer) // old state does not matter
+      )
     }
     case 'cancelCall': {
-      return [
-        lift(snd(state)).chain(call => callAlgebraImplementation.cancelCall(call)), 
-        snd(state)
-      ];
+      return update(
+        lift(snd(state)).chain(call => callAlgebraImplementation.cancelCall(call)) // we don't want to repeat the last effects but we care about its result
+      );
     }
-    case 'cancelCallSuccess': {
-      return [fst(state), action.payload];
-    }
+    case 'startACallSuccess':
+    case 'startACallError':
+    case 'cancelCallSuccess':
     case 'cancelCallError': {
       return [fst(state), action.payload];
     }
