@@ -16,12 +16,15 @@ const ioMiddleware: Middleware<{}, reduxStateT> = store => next => (action: {typ
   
   if (action.target && action.target.indexOf("@io") === 0) {
     // find all reducers that starts with io except ioReducer
-    type possibleIOReducers = Exclude<keyof reduxStateT, 'ioReducer'>;
+    type possibleIOReducers = Exclude<keyof reduxStateT, 'somenoneioredducer'>;
     
     const target = action.target.slice(1) as possibleIOReducers;
-    const io = getState()[target][0].executeWithOptions({ autoCancelableRunLoops: true }).doOnCancel(IO.of(() => {
-      console.log('trying to cancel')
-    }))
+    const io = getState()[target][0]
+      .executeWithOptions({ autoCancelableRunLoops: true })
+      .doOnCancel(IO.of(() => {
+        console.log('trying to cancel')
+      }));
+
     const c: ICancelable = io.runOnComplete(
       res => {
         res.fold(
@@ -37,10 +40,6 @@ const ioMiddleware: Middleware<{}, reduxStateT> = store => next => (action: {typ
             dispatch({
               type: action.type + 'Success',
               payload: val
-            })
-            dispatch({
-              type: `compute@${target}`,
-              payload: val 
             })
           })
       }
